@@ -341,6 +341,67 @@ def plot_category_heatmap(cat_df, out_dir):
     print(f"Saved: {out}")
 
 
+def plot_category_heatmap_rare(df, mapping, out_dir, max_count=2):
+    """Heatmap for rare categories (n <= max_count)."""
+    all_cats = set()
+    model_metrics = {}
+
+    for mk, label in MODELS.items():
+        if COL_SCORE[mk] not in df.columns:
+            continue
+        pairs = get_pairs(df, mk, mapping)
+        pm = compute_per_category(pairs)
+        model_metrics[label] = pm
+        all_cats.update(pm.keys())
+
+    first_label = list(MODELS.values())[0]
+    first_pm    = model_metrics.get(first_label, {})
+
+    # Only rare categories
+    cats = sorted(
+        [c for c in all_cats
+         if 1 <= first_pm.get(c, {}).get("support", 0) <= max_count],
+        key=lambda c: -first_pm.get(c, {}).get("support", 0)
+    )
+
+    if not cats:
+        print("No rare categories found.")
+        return
+
+    model_labels = list(MODELS.values())
+    data = np.array([
+        [model_metrics.get(lbl, {}).get(cat, {}).get("f1", np.nan)
+         for cat in cats]
+        for lbl in model_labels
+    ])
+    ns = [first_pm.get(c, {}).get("support", 0) for c in cats]
+
+    cmap = LinearSegmentedColormap.from_list("rg", ["#FCE4D6", "#FFEB9C", "#C6EFCE"])
+    fig, ax = plt.subplots(figsize=(max(8, len(cats)*0.7), 3.5))
+    im = ax.imshow(data, aspect="auto", cmap=cmap, vmin=0, vmax=1)
+
+    ax.set_xticks(range(len(cats)))
+    ax.set_xticklabels(
+        [f"{c}\n(n={n})" for c, n in zip(cats, ns)],
+        rotation=45, ha="right", fontsize=7.5)
+    ax.set_yticks(range(len(model_labels)))
+    ax.set_yticklabels(model_labels, fontsize=9)
+
+    for i in range(len(model_labels)):
+        for j in range(len(cats)):
+            v = data[i, j]
+            if not np.isnan(v):
+                ax.text(j, i, f"{v:.0%}", ha="center", va="center", fontsize=7)
+
+    plt.colorbar(im, ax=ax, fraction=0.02, pad=0.01,
+                 format=mticker.PercentFormatter(xmax=1, decimals=0))
+    ax.set_title(f"cur_dg — F1 per rare category (n≤{max_count})", fontsize=11, pad=10)
+    plt.tight_layout()
+    out = os.path.join(out_dir, "cur_dg_rare_categories_heatmap.png")
+    plt.savefig(out, dpi=150, bbox_inches="tight")
+    plt.close()
+    print(f"Saved: {out}")
+
 def plot_distribution(df, out_dir, top_n=20):
     counts = (df["gold_norm"].str.strip().str.lower()
               .value_counts().head(top_n))
@@ -357,6 +418,7 @@ def plot_distribution(df, out_dir, top_n=20):
     plt.savefig(out, dpi=150, bbox_inches="tight")
     plt.close()
     print(f"Saved: {out}")
+
 
 
 # ── Main ──────────────────────────────────────────────────────────────────────
@@ -392,6 +454,7 @@ def main():
     plot_f1_grouped(summary, args.output)
     plot_accuracy(summary, args.output)
     plot_category_heatmap(cat_df, args.output)
+    plot_category_heatmap_rare(df, mapping, args.output)
     plot_distribution(df, args.output)
 
     print("\nDone!")
