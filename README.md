@@ -15,7 +15,7 @@ A two-stage LLM-based information extraction pipeline for Finnish haematology bo
 
 ## Models
 
-All models run locally via [Ollama](https://ollama.com). Models are located on the GPU server at `/mnt/data/petteril/models/`.
+All models run locally via [Ollama](https://ollama.com). Models are stored on the shared GPU server (loska, /mnt/data/petteril/models/) used for training and inference (NVIDIA RTX A4000, 16GB VRAM).
 
 | Model | Ollama name |
 |-------|-------------|
