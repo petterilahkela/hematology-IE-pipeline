@@ -37,7 +37,7 @@ Logs/                # Training logs
 ```
 
 ## Pipeline Overview
-
+Some utility functions in the extraction scripts (e.g. benchmark mode) were developed during early iteration and are not used in the final pipeline.
 ### 1. LLM Extraction (Prompt/)
 ```bash
 # Standard prompt
