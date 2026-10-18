@@ -43,7 +43,8 @@
     "post-et myelofibroosi",
     "pv",
     "rasvanekroosi",
-    "trombosytopenia"
+    "trombosytopenia",
+    "hypersellulaarinen tila"
   ],
   "canonical_categories_cur_dg_status": [
     "epäselvä",
@@ -299,7 +300,7 @@
     "Pseudotrombosytopenia": "normaali",
     "regeneraatio": "normaali",
     "solukkuus lisääntynyt": "normaali",
-    "hypersellulaarinen tila": "normaali",
+    "hypersellulaarinen tila": "hypersellulaarinen tila",
     "megakaryopoieesi ja erytropoieesi varhaismuotopainotteisia": "normaali",
     "muutoksia erytrooisessa ja megakaryosyyteissä": "normaali",
     "erytropoieesissa ja megakaryosyyteissä lieviä muutoksia": "normaali",
@@ -497,7 +498,7 @@
     "epäselvä löydös": "epäselvä",
     "epäonnistunut": "huono näyte",
     "myelooman residuaalitauti": "myelooma",
-    "hypersellulaarinen luuydin": "normaali"
+    "hypersellulaarinen luuydin": "hypersellulaarinen tila"
 
 
 
