@@ -1,12 +1,23 @@
 """
 plot_f1_heatmap_by_support.py
 =============================
-Heatmap: per-category F1 for all models, categories sorted by training support.
+Heatmap: per-category F1 for all models (Llama 3.1, Poro2, Poro2 FT, Poro2 FT RAG, FinBERT).
+Categories are sorted by their number of training examples (high -> low).
+Only categories with at least 2 examples in both the training set and the test set are shown.
+
+Inputs:
+  --train       training set Excel file (train_v3.xlsx); the cur_dg column gives the training counts
+  --cur_dg_csv  cur_dg_per_category.csv written by analyse_cur_dg_v5.py (LLM F1 values and test counts)
+  --bert_csv    bert_per_category.csv written by evaluate_bert.py (FinBERT F1 values)
+  --output      output image (.png)
+
+Note: both CSV files are read as UTF-8, as written by the analysis scripts.
+Do not re-save them in Excel, which changes the encoding and garbles letters such as ä and ö.
 
 Usage:
     python plot_f1_heatmap_by_support.py \
-        --train      "C:\\...\\bert_data\\bert_train.csv" \
-        --cur_dg_csv "C:\\...\\cur_dg_analysis_v4\\cur_dg_per_category.csv" \
+        --train      "C:\\...\\FT_DATA\\train_v3.xlsx" \
+        --cur_dg_csv "C:\\...\\cur_dg_analysis_v5\\cur_dg_per_category.csv" \
         --bert_csv   "C:\\...\\FinBERT\\analysis\\bert_per_category.csv" \
         --output     "C:\\...\\Results\\f1_heatmap.png"
 """
@@ -18,6 +29,8 @@ import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 
 
+# Model name shown in the figure -> F1 column in cur_dg_per_category.csv (lower-cased).
+# FinBERT is read from bert_per_category.csv (column "f1"), so its value here is not used.
 MODEL_COLS = {
     "Llama 3.1":    "llama 3.1_f1",
     "Poro2":        "poro2_f1",
@@ -41,18 +54,19 @@ def main():
     support = train_df["cur_dg"].dropna().str.strip().str.lower().value_counts().to_dict()
 
     # LLM per-category
-    llm_df = pd.read_csv(args.cur_dg_csv, encoding="latin-1")
+    llm_df = pd.read_csv(args.cur_dg_csv, encoding="utf-8-sig")
     llm_df.columns = [c.strip().lower() for c in llm_df.columns]
     llm_df["category"] = llm_df["category"].str.strip().str.lower()
     print("LLM columns:", llm_df.columns.tolist())
 
     # FinBERT per-category
-    bert_df = pd.read_csv(args.bert_csv, encoding="latin-1")
+    bert_df = pd.read_csv(args.bert_csv, encoding="utf-8-sig")
     bert_df.columns = [c.strip().lower() for c in bert_df.columns]
     bert_df["category"] = bert_df["category"].str.strip().str.lower()
     print("BERT columns:", bert_df.columns.tolist())
 
-    # Build combined dataframe
+    # Categories found in the training set and in at least one per-category CSV,
+    # sorted by training support (high -> low)
     all_cats = sorted(
         [c for c in support.keys()
          if support.get(c, 0) > 0
@@ -80,7 +94,8 @@ def main():
         for _, row in llm_df.iterrows():
             test_support[str(row["category"]).strip().lower()] = int(row["n"]) if pd.notna(row["n"]) else 0
 
-    # Remove categories where all LLM models are NaN or train/test support < 3
+    # Keep only categories with an F1 value for at least one LLM and with at least
+    # 2 examples in both the training set and the test set
     llm_rows = [i for i, m in enumerate(model_labels) if m != "FinBERT"]
     keep_cols = [j for j in range(len(all_cats))
                  if not all(np.isnan(matrix[i, j]) for i in llm_rows)
@@ -90,8 +105,11 @@ def main():
     all_cats = [all_cats[j] for j in keep_cols]
     train_counts = [support.get(c, 0) for c in all_cats]
 
-    # Plot
-    fig, ax = plt.subplots(figsize=(max(14, len(all_cats) * 0.45), 4))
+    # Transpose: categories on y-axis, models on x-axis
+    matrix_T = matrix.T
+    display_labels = model_labels
+
+    fig, ax = plt.subplots(figsize=(len(model_labels) * 1.6, max(10, len(all_cats) * 0.38)))
     plt.rcParams.update({"font.family": "Arial"})
 
     from matplotlib.colors import LinearSegmentedColormap
@@ -100,29 +118,34 @@ def main():
     )
     cmap.set_bad("lightgrey")
 
-    im = ax.imshow(matrix, aspect="auto", cmap=cmap, vmin=0, vmax=1)
+    im = ax.imshow(matrix_T, aspect="auto", cmap=cmap, vmin=0, vmax=1)
 
-    # Labels
-    ax.set_xticks(range(len(all_cats)))
-    train_counts = [support.get(c, 0) for c in all_cats]
-    ax.set_xticklabels(
-        [f"{c}\n(tr={support.get(c,0)}, te={test_support.get(c,0)})" for c in all_cats],
-        rotation=45, ha="right", fontsize=7
+    # X-axis: models
+    ax.set_xticks(range(len(display_labels)))
+    ax.set_xticklabels(display_labels, fontsize=9, rotation=30, ha="right")
+
+    # Y-axis: categories sorted by training support (tr = training examples, te = test examples)
+    ax.set_yticks(range(len(all_cats)))
+    ax.set_yticklabels(
+        [f"{c}  (tr={support.get(c,0)}, te={test_support.get(c,0)})" for c in all_cats],
+        fontsize=7
     )
-    ax.set_yticks(range(len(model_labels)))
-    ax.set_yticklabels(model_labels, fontsize=9)
 
-    # Cell values
-    for i in range(len(model_labels)):
-        for j in range(len(all_cats)):
-            val = matrix[i, j]
+    # Cell values (columns with an empty label, if any, are skipped)
+    for j in range(len(display_labels)):
+        if display_labels[j] == "":
+            continue
+        for i in range(len(all_cats)):
+            val = matrix_T[i, j]
             if not np.isnan(val):
                 ax.text(j, i, f"{val:.2f}", ha="center", va="center",
-                        fontsize=6, color="black" if 0.3 < val < 0.8 else "white")
+                        fontsize=7, color="white", fontweight="bold")
 
-    # Add horizontal lines between models
-    for i in range(1, len(model_labels)):
-        ax.axhline(i - 0.5, color="white", linewidth=2)
+    # White vertical lines between the model columns (empty-label columns, if any, are skipped)
+    for j in range(1, len(display_labels)):
+        if display_labels[j] == "":
+            continue
+        ax.axvline(j - 0.5, color="white", linewidth=2)
 
     plt.colorbar(im, ax=ax, label="F1 score", shrink=0.8)
     ax.set_title("Per-category F1 by model — sorted by training set support (high → low)",
