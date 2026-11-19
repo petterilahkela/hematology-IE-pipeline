@@ -33,6 +33,7 @@ Code/
 ├── FT/              # Fine-tuning scripts (QLoRA)
 ├── BERT/            # FinBERT benchmark scripts
 ├── Eval/            # Evaluation and analysis scripts
+├── archive/         # Deprecated scripts from earlier iterations (not used in final pipeline)
 Logs/                # Training logs
 ```
 
@@ -71,13 +72,13 @@ python evaluate_bert.py --input bert_predictions.xlsx --output bert_analysis/
 ### 4. Evaluation (Eval/)
 ```bash
 python prepare_for_evaluation_v3.py --test test_v3.xlsx --llama results_llama.xlsx ...
-python analyse_cur_dg_v4.py --input eval.xlsx --mapping label_mapping_extended_eval.json --output cur_dg_analysis/
+python analyse_cur_dg_v5.py --input eval.xlsx --mapping label_mapping_extended_eval.json --output cur_dg_analysis/
 python analyse_other_fields_v4.py --input eval.xlsx --output other_fields_analysis/
 ```
 
 ## Data
 
-Patient data is not included in this repository due to privacy constraints. The train/val/test split (2,377 / 316 / 357 samples) was obtained by matching record IDs with a collaborator’s parallel project rather than using an independent splitting script. split_data_v3_NotUsed.py contains an alternative splitting approach that does not reproduce the exact split used.
+Patient data is not included in this repository due to privacy constraints. The train/val/test split (2,377 / 316 / 357 samples) was obtained by matching record IDs with a collaborator’s parallel project rather than using an independent splitting script. `archive/FT/split_data_v3_NotUsed.py` contains an alternative splitting approach that does not reproduce the exact split used.
 
 ## Requirements
 
