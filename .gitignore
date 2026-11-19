@@ -1,4 +1,4 @@
-﻿# Python cache
+# Python cache
 __pycache__/
 *.py[cod]
 .ipynb_checkpoints/
@@ -6,7 +6,6 @@ __pycache__/
 # Data files (Patient data privacy!)
 *.xlsx
 *.csv
-*.json
 *.pkl
 
 # Model files (Too large for Git)
@@ -15,8 +14,9 @@ __pycache__/
 *.safetensors
 *.pt
 
-# Logs (Optional, but you have your main logs tracked which is good)
-# Logs/*.log
+# Ignore JSON data files, but keep label mappings
+*.json
+!Code/Eval/*.json
 
 # System files
 .DS_Store
