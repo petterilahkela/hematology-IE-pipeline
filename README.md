@@ -15,14 +15,14 @@ A two-stage LLM-based information extraction pipeline for Finnish haematology bo
 
 ## Models
 
-All models run locally via [Ollama](https://ollama.com). Models are stored on the shared GPU server (loska, /mnt/data/petteril/models/) used for training and inference (NVIDIA RTX A4000, 16GB VRAM).
+All models run locally via [Ollama](https://ollama.com) on the shared GPU server (loska) used for training and inference (NVIDIA RTX A4000, 16GB VRAM). The fine-tuned LLMs are registered in Ollama's internal registry and can be viewed using the ollama list command. The /mnt/data/petteril/models/ directory contains the base GGUF files and the FinBERT checkpoint.
 
-| Model | Ollama name |
-|-------|-------------|
-| Llama 3.1 8B Instruct | `llama3.1:8b` |
-| Poro2 8B Instruct | `hf.co/mradermacher/Llama-Poro-2-8B-Instruct-i1-GGUF:Q4_K_M` |
-| Poro2 + FT | `poro2-finetuned-v3:latest` |
-| Poro2 + FT RAG | `poro2-finetuned-rag-v3:latest` |
+| Model | Model Identifier / Location |
+|-------|-----------------------------|
+| Llama 3.1 8B Instruct | `llama3.1:8b` (Ollama) |
+| Poro2 8B Instruct | `Poro2-In:latest` (Ollama) |
+| Poro2 + FT | `poro2-finetuned-v3:latest` (Ollama) |
+| Poro2 + FT RAG | `poro2-finetuned-rag-v3:latest` (Ollama) |
 | FinBERT | `TurkuNLP/bert-base-finnish-cased-v1` (fine-tuned, saved at `/mnt/data/petteril/models/bert-cur-dg-v1`) |
 
 ## Code Structure
