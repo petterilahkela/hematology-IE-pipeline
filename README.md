@@ -1,5 +1,14 @@
 # Hematology Information Extraction Pipeline
 
+## Project Context
+
+This repository contains the implementation for a Master's thesis at Aalto University, conducted in collaboration with the Hematoscope Lab and HUS (Helsinki University Hospital). 
+
+The project has two main objectives:
+1. **Clinical Application:** To extract structured clinical variables from unstructured Finnish haematology bone marrow referrals and diagnostic reports, enabling downstream research on structured data.
+2. **Methodological Evaluation:** To systematically compare progressive model adaptation strategies for Finnish clinical Information Extraction (IE). Specifically, it evaluates the performance gains from Finnish language pretraining (Poro 2 vs. LLaMA 3.1), task-specific fine-tuning (QLoRA), and Retrieval-Augmented Generation (RAG).
+
+
 A two-stage LLM-based information extraction pipeline for Finnish haematology bone marrow referrals and reports. The pipeline extracts six structured clinical variables using prompt engineering, fine-tuning, and retrieval-augmented generation (RAG).
 
 ## Extracted Variables
