@@ -54,7 +54,9 @@ python extract_hematology_prompting_rag_v3.py \
 ### 2. Fine-tuning (FT/)
 ```bash
 python prepare_finetune_data_v3.py
+python prepare_finetune_data_rag_v3.py
 python finetune_v3.py
+python finetune_rag_v3.py  # Fine-tuning for the RAG pipeline
 python merge_and_convert.py  # convert to GGUF and quantise
 ```
 
