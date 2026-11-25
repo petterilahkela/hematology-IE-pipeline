@@ -3,6 +3,9 @@ predict_bert.py
 ===============
 Runs inference with the fine-tuned BERT cur_dg classifier on the test set
 and produces an Excel file for manual lenient evaluation.
+The auto-scored exact matches are then reviewed manually so that clinically
+proximate category mismatches (e.g. parent category vs. subtype) can be
+marked as acceptable under the lenient evaluation described in the thesis.
 
 Auto-scores exact matches (score=1) and cases where both gold and pred
 are null (score=None, grey). All mismatches are left blank for manual review.

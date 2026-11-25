@@ -9,10 +9,10 @@ data preparation — no mapping needed.
 
 Usage:
     python prepare_bert_data.py \
-        --train   "C:\\...\\train_v3.xlsx" \
-        --val     "C:\\...\\val_v3.xlsx" \
-        --test    "C:\\...\\test_v3.xlsx" \
-        --output  "C:\\...\\bert_data\\"
+        --train  /mnt/data/petteril/V3/Data/train_v3.xlsx \
+        --val    /mnt/data/petteril/V3/Data/val_v3.xlsx \
+        --test   /mnt/data/petteril/V3/Data/test_v3.xlsx \
+        --output /mnt/data/petteril/V3/Data/bert_data/
 """
 
 import argparse

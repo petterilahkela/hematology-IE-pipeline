@@ -1,7 +1,7 @@
 """
 prepare_finetune_data_v3.py
 ===========================
-Converts annotated hematology Excel files to JSONL format for LoRA fine-tuning.
+Converts annotated hematology Excel files to JSONL format for QLoRA fine-tuning.
 Takes separate train and val files instead of splitting internally.
 
 Each Excel row becomes TWO training examples:
@@ -10,9 +10,9 @@ Each Excel row becomes TWO training examples:
 
 Usage:
     python3 prepare_finetune_data_v3.py \
-        --train_file /mnt/data/petteril/data/v3/train_v3.xlsx \
-        --val_file   /mnt/data/petteril/data/v3/val_v3.xlsx \
-        --output_dir /mnt/data/petteril/data/finetune_v3/
+        --train_file /mnt/data/petteril/V3/Data/train_v3.xlsx \
+        --val_file   /mnt/data/petteril/V3/Data/val_v3.xlsx \
+        --output_dir /mnt/data/petteril/V3/Data/finetune_v3/
 """
 
 import pandas as pd

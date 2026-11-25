@@ -1,6 +1,6 @@
 """
-analyse_all_fields_v3.py
-========================
+analyse_other_fields_v4.py
+==========================
 Computes for each free-text field (suspected_dg, prev_cur_dg, treatment):
 - Overall accuracy (null-null = correct)
 - Extraction Recall (only when gold is non-null)
@@ -8,13 +8,13 @@ Computes for each free-text field (suspected_dg, prev_cur_dg, treatment):
 - Extraction F1 (binary F1 = 2PR/(P+R) on the extraction metrics)
 
 Note: cur_dg is NOT included here — it is evaluated separately by
-analyse_cur_dg_v3.py, which computes macro/micro/weighted F1 using
+analyse_cur_dg_v5.py, which computes macro/micro/weighted F1 using
 the categorical label mapping.
 
 Usage:
-    python analyse_all_fields_v3.py \
+    python analyse_other_fields_v4.py \
         --input  "C:\\...\\eval_v3_norm_J.xlsx" \
-        --output "C:\\...\\all_fields_analysis_v3\\"
+        --output "C:\\...\\other_fields_analysis_v4\\"
 """
 
 import argparse

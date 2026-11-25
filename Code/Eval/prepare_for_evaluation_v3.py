@@ -1,20 +1,20 @@
 """
 prepare_for_evaluation_v3.py
-========================
+============================
 Creates an evaluation Excel file for manual scoring of V3 model results.
 One sheet per field, all models side by side.
 Auto-scores exact matches and null cases.
 Adds an unknown cur_dg values sheet at the end.
 
 Usage:
-    python prepare_evaluation_v3.py \
+    python prepare_for_evaluation_v3.py \
         --test    "C:\\...\\test_v3.xlsx" \
         --llama   "C:\\...\\results_llama_v3.xlsx" \
         --poro2   "C:\\...\\results_poro2_v3.xlsx" \
         --ft      "C:\\...\\results_poro2_ft_v3.xlsx" \
         --rag     "C:\\...\\results_poro2_ft_rag_v3.xlsx" \
         --mapping "C:\\...\\label_mapping_extended_eval.json" \
-        --output  "C:\\...\\eval_v3_norm.xlsx" \
+        --output  "C:\\...\\eval_v3_norm.xlsx"
 """
 
 import argparse

@@ -24,14 +24,14 @@ A two-stage LLM-based information extraction pipeline for Finnish haematology bo
 
 ## Models
 
-All models run locally via [Ollama](https://ollama.com) on the shared GPU server (loska) used for training and inference (NVIDIA RTX A4000, 16GB VRAM). The fine-tuned LLMs are registered in Ollama's internal registry and can be viewed using the ollama list command. The /mnt/data/petteril/models/ directory contains the base GGUF files and the FinBERT checkpoint.
+All models run locally via [Ollama](https://ollama.com) on the shared GPU server (loska) used for training and inference (NVIDIA RTX A4000, 16GB VRAM). The fine-tuned LLMs are registered in Ollama's internal registry and can be viewed using the ollama list command. The /mnt/data/petteril/models/ directory contains the base GGUF files and the FinBERT checkpoint. All LLMs are quantised to 4-bit GGUF (Q4_K_M) for local inference.
 
 | Model | Model Identifier / Location |
 |-------|-----------------------------|
 | Llama 3.1 8B Instruct | `llama3.1:8b` (Ollama) |
 | Poro2 8B Instruct | `Poro2-In:latest` (Ollama) |
-| Poro2 + FT | `poro2-finetuned-v3:latest` (Ollama) |
-| Poro2 + FT RAG | `poro2-finetuned-rag-v3:latest` (Ollama) |
+| Poro2 FT | `poro2-finetuned-v3:latest` (Ollama) |
+| Poro2 FT RAG | `poro2-finetuned-rag-v3:latest` (Ollama) |
 | FinBERT | `TurkuNLP/bert-base-finnish-cased-v1` (fine-tuned, saved at `/mnt/data/petteril/models/bert-cur-dg-v1`) |
 
 ## Code Structure
@@ -47,7 +47,10 @@ Logs/                # Training logs
 ```
 
 ## Pipeline Overview
-Some utility functions in the extraction scripts (e.g. benchmark mode) were developed during early iteration and are not used in the final pipeline.
+Note on unfinished code paths: The extraction scripts contain two paths that are not used in the final pipeline: an Anthropic API backend and a --benchmark mode. Both were started during early development and are kept only for transparency. The final pipeline uses the Ollama backend only.
+
+Note on language: The pipeline uses Finnish-language prompts. An English translation is provided at Code/Prompt/EN_prompt_translation.md for readability only and was not used in training, inference, or evaluation.
+
 ### 1. LLM Extraction (Prompt/)
 ```bash
 # Standard prompt

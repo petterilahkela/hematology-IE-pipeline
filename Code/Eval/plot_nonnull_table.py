@@ -1,5 +1,11 @@
 """
 plot_nonnull_table.py
+=====================
+Generates a table (or figure) showing non-null extraction rates per field
+per model — i.e. how often each model returned a value rather than null.
+
+Usage:
+    python plot_nonnull_table.py
 """
 
 import argparse

@@ -1,5 +1,5 @@
 """
-analyse_cur_dg_v3.py
+analyse_cur_dg_v5.py
 ====================
 Reads the cur_dg sheet from eval_v3_norm_J.xlsx and computes
 correct micro/macro/weighted F1, Precision, and Recall per model.
@@ -20,10 +20,10 @@ Changes:
   - Error analysis legend moved to the right side of the plot.
 
 Usage:
-    python analyse_cur_dg_v3.py \
+    python analyse_cur_dg_v5.py \
         --input   "C:\\...\\eval_v3_norm_J.xlsx" \
         --mapping "C:\\...\\label_mapping_extended_eval.json" \
-        --output  "C:\\...\\cur_dg_analysis_v4\\"
+        --output  "C:\\...\\cur_dg_analysis_v5\\"
 """
 
 import argparse

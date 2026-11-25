@@ -1,16 +1,18 @@
 """
-prepare_finetune_data.py
-========================
-Converts annotated hematology Excel file to JSONL format for LoRA fine-tuning.
+prepare_finetune_data_rag_v3.py
+===============================
+Converts annotated hematology Excel files to JSONL format for QLoRA fine-tuning
+with RAG-style training data (retrieved examples instead of static few-shot).
 
 Each Excel row becomes TWO training examples:
-  - Example 1: referral text → 4 fields (stage 1)
-  - Example 2: report text + stage 1 context → 2 fields (stage 2)
+  - Example 1: referral text + retrieved referral examples → 4 fields (stage 1)
+  - Example 2: report text + retrieved report examples + stage 1 context → 2 fields (stage 2)
 
 Usage:
-    python3 prepare_finetune_data.py \
-        --input /mnt/data/petteril/data/finetune_data.xlsx \
-        --output_dir /mnt/data/petteril/data/finetune/
+    python3 prepare_finetune_data_rag_v3.py \
+        --train_file /mnt/data/petteril/V3/Data/train_v3.xlsx \
+        --val_file   /mnt/data/petteril/V3/Data/val_v3.xlsx \
+        --output_dir /mnt/data/petteril/V3/Data/finetune_rag_v3/
 """
 
 import pandas as pd

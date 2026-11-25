@@ -1,15 +1,15 @@
 """
 merge_and_convert.py
 ====================
-Merges the LoRA adapter with the Poro2 base model and converts to GGUF format for Ollama.
+Merges the QLoRA adapter with the Poro 2 base model and converts to GGUF format for Ollama.
 
-Run this AFTER finetune.py has completed successfully.
+Run this AFTER finetune_v3.py or finetune_rag_v3.py has completed successfully.
 
 Usage:
     python3 merge_and_convert.py
 
 Steps:
-    1. Load base model + LoRA adapter
+    1. Load base model + QLoRA adapter
     2. Merge adapter into base model
     3. Save merged model (~16GB, temporary)
     4. Convert to GGUF Q4_K_M (~5GB, final)

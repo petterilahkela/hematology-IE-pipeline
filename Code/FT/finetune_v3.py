@@ -1,20 +1,20 @@
 """
-finetune.py
-===========
-LoRA fine-tuning script for Poro2 Instruct on hematology extraction task.
+finetune_v3.py
+==============
+QLoRA fine-tuning script for Poro 2 Instruct on the Finnish hematology extraction task.
 
 Prerequisites:
     pip install transformers peft trl bitsandbytes accelerate --break-system-packages
 
 Usage:
-    python3 finetune.py
+    python3 finetune_v3.py
 
     # Or run in background overnight:
-    nohup python3 finetune.py > /mnt/data/petteril/logs/finetune_log.txt 2>&1 &
+    nohup python3 finetune_v3.py > Logs/finetune_log_v3.txt 2>&1 &
 
 After training:
     - Best model is saved automatically to OUTPUT_DIR
-    - Convert to GGUF with llama.cpp for use with Ollama
+    - Convert to GGUF with merge_and_convert.py for use with Ollama
 """
 
 import torch

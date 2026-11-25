@@ -10,6 +10,8 @@ Usage:
     python finetune_bert.py
 
 After training:
+    - Best checkpoint selected by validation macro F1 (not loss), because
+      cross-entropy loss is dominated by the majority class ("normaali")
     - Best model saved to OUTPUT_DIR
     - Use predict_bert.py to run inference on test set
 """

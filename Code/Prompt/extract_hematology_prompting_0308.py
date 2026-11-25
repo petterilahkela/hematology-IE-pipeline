@@ -15,64 +15,50 @@ Fields extracted  (in output order):
     cur_dg               - current diagnosis or key morphological finding after the report
     cur_dg_status        - status based on report; standard category or descriptive finding
 
-MODEL RECOMMENDATION (14 GB GPU)
-----------------------------------
-  Best:  qwen2.5:14b  (Ollama, Q4_K_M ≈ 8.7 GB VRAM)
-         - Multilingual with strong Finnish; best medical reasoning in this size class.
-         - Run: ollama pull qwen2.5:14b
+MODELS USED
+-----------
+  Final thesis pipeline models (see repository README for details):
+    llama3.1:8b                   - LLaMA 3.1 8B Instruct (baseline)
+    Poro2-In:latest               - Poro 2 8B Instruct (Finnish continued pretraining)
+    poro2-finetuned-v3:latest     - Poro 2 + QLoRA fine-tuning
+    poro2-finetuned-rag-v3:latest - Poro 2 + QLoRA fine-tuning + RAG (best configuration)
 
-  Challenger worth benchmarking:
-    hf.co/LumiOpen/Llama-Poro-2-8B-Instruct  (≈ 5 GB Q4, ~2× faster)
-    - Llama 3 base continued-pretrained on Finnish by LumiOpen, then instruction-tuned.
-    - Better Finnish than vanilla Llama 3.1 8B; inherits Llama's reasoning & world knowledge.
-    - Run via Ollama: ollama run hf.co/LumiOpen/Llama-Poro-2-8B-Instruct
-    - Use --benchmark to compare it head-to-head against qwen2.5:14b on your ground truth.
-
-  Too large for 14 GB:
-    Poro 2 70B  (≥ 42 GB VRAM)
-    Poro 1 34B  (≥ 20 GB VRAM, also no instruction tuning)
+  All models run locally via Ollama to ensure patient data privacy.
+  GPU: NVIDIA RTX A4000 (16 GB VRAM).
 
 SETUP
 -----
-  pip install pandas openpyxl aiohttp anthropic tqdm
+  pip install pandas openpyxl aiohttp tqdm
+  # anthropic is only needed if using the (unused) Anthropic backend
 
-  For Ollama (recommended):
-    ollama pull qwen2.5:14b
-    ollama serve          # starts on localhost:11434
+  For Ollama (used in the final pipeline):
+    ollama pull llama3.1:8b
+    ollama serve          # starts Ollama's local API on port 11434
 
-  For Anthropic:
+  For Anthropic (alternative backend; NOT used in the final pipeline):
     export ANTHROPIC_API_KEY=sk-...
 
 USAGE
 -----
-  # Ollama (default)
-  python extract_hematology.py --input data.xlsx --output results.xlsx
+  # Ollama (default, used in the final pipeline)
+  python extract_hematology_prompting_0308.py \\
+      --input data.xlsx --output results.xlsx \\
+      --model llama3.1:8b --batch-size 1 --concurrency 1
 
-  # Anthropic
-  python extract_hematology.py --input data.xlsx --output results.xlsx \\
+  # Anthropic (alternative backend; NOT used in the final pipeline)
+  python extract_hematology_prompting_0308.py \\
+      --input data.xlsx --output results.xlsx \\
       --backend anthropic --model claude-haiku-4-5-20251001
 
-  # Tune for 50k rows (raise batch-size and concurrency cautiously)
-  python extract_hematology.py --input data.xlsx --output results.xlsx \\
+  # Example of scaling to 50k rows (raise batch-size and concurrency cautiously)
+  python extract_hematology_prompting_0308.py \\
+      --input data.xlsx --output results.xlsx \\
       --batch-size 5 --concurrency 3
-
-BENCHMARK MODE
---------------
-  Compare two models head-to-head on labelled ground-truth rows.
-  The input file must already contain the corrected/gold extraction columns
-  (suspected_dg, prev_cur_dg, …) — those are used as the reference.
-
-  python extract_hematology.py --benchmark \\
-      --input MGG_combined1_extracted.xlsx \\
-      --model-a qwen2.5:14b \\
-      --model-b hf.co/LumiOpen/Llama-Poro-2-8B-Instruct \\
-      --benchmark-rows 20
-
-  Outputs:
-    • Per-field accuracy table for each model (exact + partial match)
-    • Speed comparison (rows/second, estimated 50k runtime)
-    • Side-by-side diff for every disagreement
-    • benchmark_results.xlsx saved next to --input
+      
+BENCHMARK MODE (NOT used in the final pipeline)
+-----------------------------------------------
+  Benchmark mode for head-to-head model comparison was started during early
+  development but was not completed or used in the final thesis pipeline.
 """
 
 import pandas as pd

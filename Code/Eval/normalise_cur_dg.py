@@ -1,7 +1,7 @@
 """
 normalize_labels.py
 ===================
-Normalizes cur_dg and cur_dg_status fields in annotated data
+Normalises cur_dg and cur_dg_status fields in annotated data
 using label_mapping_extended.json.
 
 Usage:

@@ -7,7 +7,7 @@ Two bar charts:
 
 Usage:
     python plot_macro_f1_accuracy.py \
-        --cur_dg_summary "C:\\...\\cur_dg_analysis_v4\\cur_dg_summary.csv" \
+        --cur_dg_summary "C:\\...\\cur_dg_analysis_v5\\cur_dg_summary.csv" \
         --bert_summary   "C:\\...\\FinBERT\\analysis\\bert_summary.csv" \
         --output_dir     "C:\\...\\Results\\"
 """

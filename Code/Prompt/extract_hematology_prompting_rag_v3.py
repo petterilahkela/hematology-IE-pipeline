@@ -9,7 +9,7 @@ Usage:
     python3 extract_hematology_prompting_rag_v3.py \
         --input   /mnt/data/petteril/V3/Data/test_v3.xlsx \
         --output  /mnt/data/petteril/V3/Results/results_poro2_ft_rag_v3.xlsx \
-        --model   poro2-finetuned-rag-v3 \
+        --model   poro2-finetuned-rag-v3:latest \
         --training-file /mnt/data/petteril/V3/Data/train_v3.xlsx \
         --batch-size 1 --concurrency 1
 """

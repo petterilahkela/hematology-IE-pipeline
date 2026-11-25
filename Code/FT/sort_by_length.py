@@ -1,3 +1,17 @@
+"""
+sort_by_length.py
+=================
+Utility script to sort JSONL fine-tuning files by example length (longest first).
+
+Reads each file, computes the token length of each example, sorts the examples
+in descending order by length, and rewrites the file in-place. Used during
+data preparation to inspect the longest examples and verify they stay within
+the maximum sequence length.
+
+Usage:
+    python3 sort_by_length.py
+"""
+
 import json
 from transformers import AutoTokenizer
 tokenizer = AutoTokenizer.from_pretrained('/mnt/data/petteril/models/poro2-instruct-hf')

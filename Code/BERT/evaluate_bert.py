@@ -4,12 +4,12 @@ evaluate_bert.py
 Computes macro/micro/weighted precision, recall, F1 and accuracy
 from manually evaluated bert_predictions.xlsx.
 
-Uses the same lenient scoring logic as analyse_cur_dg_v4.py.
+Uses the same lenient scoring logic as analyse_cur_dg_v5.py.
 
 Usage:
     python evaluate_bert.py \
-        --input  "C:\\...\\bert_predictions.xlsx" \
-        --output "C:\\...\\bert_analysis\\"
+        --input  /mnt/data/petteril/V3/Results/bert_predictions.xlsx \
+        --output /mnt/data/petteril/V3/Results/bert_analysis/
 """
 
 import argparse
