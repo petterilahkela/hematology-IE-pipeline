@@ -34,6 +34,16 @@ All models run locally via [Ollama](https://ollama.com) on the shared GPU server
 | Poro2 FT RAG | `poro2-finetuned-rag-v3:latest` (Ollama) |
 | FinBERT | `TurkuNLP/bert-base-finnish-cased-v1` (fine-tuned, saved at `/mnt/data/petteril/models/bert-cur-dg-v1`) |
 
+### Model Version Details
+
+- **Llama 3.1 8B**: Ollama digest `46e0c10c039e` (accessed June 16, 2026); base model `meta-llama/Llama-3.1-8B-Instruct` commit `0e9e39f249a1`
+- **Poro 2 8B Instruct**: `mradermacher/Llama-Poro-2-8B-Instruct-GGUF` commit `3b099f9` (accessed June 16, 2026); base model `LumiOpen/Llama-Poro-2-8B-Instruct` commit `dce56191` (accessed July 6, 2026)
+- **Poro 2 FT**: Ollama digest `cbaa22e2eaa5`
+- **Poro 2 FT RAG**: Ollama digest `ca7c90efabd0`
+- **FinBERT base**: `TurkuNLP/bert-base-finnish-cased-v1` commit `57c8241f` (accessed October 15, 2026)
+- **Ollama**: Version 0.24.0, temperature 0, context 4096 tokens, max output 768 tokens
+
+
 ## Code Structure
 
 ```
